@@ -17,7 +17,6 @@ class UserCommands(commands.Cog):
         self.client=client
 
     @commands.command()
-    @commands.cooldown(1,86400, commands.BucketType.user)
     async def wish(self, ctx, member):
         with open(f"{self.path}setup.json","r") as fp:
             setup_dict = json.load(fp)
@@ -27,9 +26,6 @@ class UserCommands(commands.Cog):
             member= member[3:-1]
         else:
             member=member
-        
-        with open(f"{self.path}rewards.json","r") as fp:
-            rewards = json.load(fp)
 
         user_id= await self.client.fetch_user(member)
 
@@ -68,16 +64,7 @@ class UserCommands(commands.Cog):
         if reaction.emoji== '❌':
             await ctx.author.send("Cancelled")
             return
-        
-        with open(f"{self.path}rewards.json", "w") as f:
-            json.dump(rewards, f)
 
-    @wish.error
-    async def wish_error(self, ctx, exc):
-        if isinstance(exc, commands.CommandOnCooldown):
-            sec= int(exc.retry_after)
-            mins= sec//60
-            await ctx.send(f"The command is on cooldown. Try again in {mins} minutes.")
 
     @commands.command(description= "Joins the game", brief= "Joins the game")
     async def join(self,ctx):
