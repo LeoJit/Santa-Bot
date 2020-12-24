@@ -100,49 +100,11 @@ class Setup(commands.Cog):
 
         guild = self.client.get_guild(setup_dict["Guild"])
         don_role = discord.utils.get(guild.roles, id=setup_dict["don_role"])
-        
-        g=0
-        while g==0:
-            now = datetime.utcnow()
-            time1 = datetime.strftime(now, "%H:%M:%S")
-            await ctx.send(f"At what time UTC would you want to receive reminders about open suggestions? \n Current time is `{time1}`")
-            time= await ctx.bot.wait_for("message", check=lambda message: message.author == ctx.author, timeout=60)
+  
 
-            if time.content.count(":")==1:
-                setup_dict["time"]= time.content
-                g=1
-                break
-            else:
-                await ctx.send("Please try again...")
-        
-        with open(f"{self.path}setup.json", "w") as f:
-                json.dump(setup_dict, f)
-
-        await channel_rewards.send(f"You will be reminded daily at `{time.content}` UTC :)")
         await ctx.send("Setup complete 👌")
         await channel_rewards.send(f"Reward reminders will be sent here")   
         
-    @commands.command()
-    async def change_time(self, ctx):
-        with open(f"{self.path}setup.json","r") as fp:
-            setup_dict = json.load(fp)
-
-        z=0
-        while z==0:
-            now = datetime.utcnow()
-            time1 = datetime.strftime(now, "%H:%M:%S")
-            await ctx.send(f"At what time UTC would you want to receive reminders about open suggestions? \n Current time is `{time1}`")
-            time= await ctx.bot.wait_for("message", check=lambda message: message.author == ctx.author, timeout=60)
-
-            if time.content.count(":")==1:
-                setup_dict["time"]= time.content
-                z=1
-                break
-            else:
-                await ctx.send("Please try again...")
-
-        with open(f"{self.path}setup.json", "w") as f:
-                json.dump(setup_dict, f)
 
 def setup(client):
     client.add_cog(Setup(client))
