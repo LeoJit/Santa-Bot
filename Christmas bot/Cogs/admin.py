@@ -61,7 +61,7 @@ class admin(commands.Cog):
             card= card_dict[str(i)]
             check= str(value)
             if check in card:
-                card= card.replace(check, ".")
+                card= card.replace(check, "X")
             card_dict[str(i)]= card
 
         with open(f"{self.path}cards.json", "w") as f:
@@ -82,7 +82,7 @@ class admin(commands.Cog):
         for i in range(len(l)):
             user= await self.client.fetch_user(int(l[i]))
             ucard= card_dict[str(i)]
-            if ucard.count(".")==25:
+            if ucard.count("X")==25:
                 await user.send("You have won the game! Congratulations!")
                 await ctx.send("**BINGO**")
                 await ctx.send(f"Congratulations <@{int(l[i])}>! You have won the game!!")
